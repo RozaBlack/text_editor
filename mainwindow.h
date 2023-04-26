@@ -9,6 +9,7 @@
 #include <QHBoxLayout>
 #include <QPushButton>
 #include <QTextCursor>
+#include <QComboBox>
 #include <QLineEdit>
 #include <QTextEdit>
 #include <QKeyEvent>
@@ -16,6 +17,7 @@
 #include <QFile>
 
 #include "syntaxhighlighter.h"
+#include "fontmanager.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -38,6 +40,12 @@ public:
 
 protected:
     void keyPressEvent(QKeyEvent *event) override;
+private slots:
+    void fontBoxChanged();
+    void boldButton();
+    void italicButton();
+    void underlinedButton();
+    void strikeOutButton();
 private:
     Ui::MainWindow *ui;
 
@@ -46,5 +54,6 @@ private:
     QString file_name; // This var located here for cashing file name
 
     SyntaxHighlighter *searchHighlighter;
+    FontManager             *fontManager;
 };
 #endif // MAINWINDOW_H

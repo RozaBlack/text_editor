@@ -7,7 +7,8 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    searchHighlighter = new SyntaxHighlighter(ui->main_text->document());
+    searchHighlighter = new SyntaxHighlighter(ui->main_text);
+    fontManager       = new FontManager();
 
     QLabel *text_label           = new QLabel(tr("find text:"), this);
     QPushButton *next_button     = new QPushButton(tr("next"), this);
@@ -16,9 +17,28 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->statusbar->addWidget(text_label);
     ui->statusbar->addWidget(find_le);
-    ui->statusbar->addWidget(next_button);
     ui->statusbar->addWidget(previous_button);
+    ui->statusbar->addWidget(next_button);
     ui->statusbar->hide();
+
+    ui->font_combo_box->setEditable(false);
+    ui->font_size_box->setEditable(false);
+    ui->font_size_box->addItem("8", 8);
+    ui->font_size_box->addItem("9", 9);
+    ui->font_size_box->addItem("10", 10);
+    ui->font_size_box->addItem("11", 11);
+    ui->font_size_box->addItem("12", 12);
+    ui->font_size_box->addItem("14", 14);
+    ui->font_size_box->addItem("16", 16);
+    ui->font_size_box->addItem("18", 18);
+    ui->font_size_box->addItem("20", 20);
+    ui->font_size_box->addItem("22", 22);
+    ui->font_size_box->addItem("24", 24);
+    ui->font_size_box->addItem("26", 26);
+    ui->font_size_box->addItem("28", 28);
+    ui->font_size_box->addItem("36", 36);
+    ui->font_size_box->addItem("48", 48);
+    ui->font_size_box->addItem("72", 72);
 
     connect(ui->open_button,     &QPushButton::clicked, this, &MainWindow::openFile);
     connect(ui->actionOpen_file, &QAction::triggered,   this, &MainWindow::openFile);
@@ -27,10 +47,19 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->actionSave_2,    &QAction::triggered,   this, &MainWindow::saveFile);
     connect(next_button,         &QPushButton::clicked, this, &MainWindow::findNext);
     connect(previous_button,     &QPushButton::clicked, this, &MainWindow::findPrevious);
+
+    connect(ui->font_size_box,      SIGNAL(activated(int)), this, SLOT(fontBoxChanged()));
+    connect(ui->font_combo_box,     SIGNAL(activated(int)), this, SLOT(fontBoxChanged()));
+    connect(ui->bold_button,        SIGNAL(clicked()),      this, SLOT(boldButton()));
+    connect(ui->italic_button,      SIGNAL(clicked()),      this, SLOT(italicButton()));
+    connect(ui->underlined_button,  SIGNAL(clicked()),      this, SLOT(underlinedButton()));
+    connect(ui->strikeout_button,   SIGNAL(clicked()),      this, SLOT(strikeOutButton()));
 }
 
 MainWindow::~MainWindow()
 {
+    delete searchHighlighter;
+    delete fontManager;
     delete ui;
 }
 
@@ -143,11 +172,38 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
             if(ui->statusbar->isHidden())
             {
                 ui->statusbar->show();
+                find_le->setFocus();
             }else{
                 ui->statusbar->hide();
             }
             break;
         }
     }
+}
+
+void MainWindow::fontBoxChanged()
+{
+   fontManager->fontSizeChanged(ui->main_text,ui->font_combo_box->currentText(),
+                                ui->font_size_box->currentData().toInt());
+}
+
+void MainWindow::boldButton()
+{
+    fontManager->setBold(ui->main_text);
+}
+
+void MainWindow::italicButton()
+{
+    fontManager->setItalic(ui->main_text);
+}
+
+void MainWindow::underlinedButton()
+{
+    fontManager->setUnderlined(ui->main_text);
+}
+
+void MainWindow::strikeOutButton()
+{
+    fontManager->setStrikeOut(ui->main_text);
 }
 
