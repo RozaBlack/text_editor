@@ -9,12 +9,13 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     searchHighlighter = new SyntaxHighlighter(ui->main_text);
     fontManager       = new FontManager();
+    theme             = new Theme();
 
     QLabel *text_label           = new QLabel(tr("find text:"), this);
     QPushButton *next_button     = new QPushButton(tr("next"), this);
     QPushButton *previous_button = new QPushButton(tr("previous"), this);
     find_le                      = new QLineEdit(this);
-
+//setWindowFlag(Qt::ToolTip);
     ui->statusbar->addWidget(text_label);
     ui->statusbar->addWidget(find_le);
     ui->statusbar->addWidget(previous_button);
@@ -23,6 +24,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->font_combo_box->setEditable(false);
     ui->font_size_box->setEditable(false);
+    ui->theme_box->setEditable(false);
     ui->font_size_box->addItem("8", 8);
     ui->font_size_box->addItem("9", 9);
     ui->font_size_box->addItem("10", 10);
@@ -40,6 +42,11 @@ MainWindow::MainWindow(QWidget *parent)
     ui->font_size_box->addItem("48", 48);
     ui->font_size_box->addItem("72", 72);
 
+    ui->theme_box->addItem("light", 1);
+    ui->theme_box->addItem("dark", 2);
+
+    theme->setTheme(2);
+
     connect(ui->open_button,     &QPushButton::clicked, this, &MainWindow::openFile);
     connect(ui->actionOpen_file, &QAction::triggered,   this, &MainWindow::openFile);
     connect(ui->save_button,     &QPushButton::clicked, this, &MainWindow::saveFileAs);
@@ -50,10 +57,13 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(ui->font_size_box,      SIGNAL(activated(int)), this, SLOT(fontBoxChanged()));
     connect(ui->font_combo_box,     SIGNAL(activated(int)), this, SLOT(fontBoxChanged()));
+    connect(ui->theme_box,          SIGNAL(activated(int)), this, SLOT(changeTheme()));
     connect(ui->bold_button,        SIGNAL(clicked()),      this, SLOT(boldButton()));
     connect(ui->italic_button,      SIGNAL(clicked()),      this, SLOT(italicButton()));
     connect(ui->underlined_button,  SIGNAL(clicked()),      this, SLOT(underlinedButton()));
     connect(ui->strikeout_button,   SIGNAL(clicked()),      this, SLOT(strikeOutButton()));
+
+    connect(theme, SIGNAL(setThemeSignal(QPalette)), this, SLOT(setTheme(QPalette)));
 }
 
 MainWindow::~MainWindow()
@@ -205,5 +215,15 @@ void MainWindow::underlinedButton()
 void MainWindow::strikeOutButton()
 {
     fontManager->setStrikeOut(ui->main_text);
+}
+
+void MainWindow::changeTheme()
+{
+    theme->setTheme(ui->theme_box->currentData().toInt());
+}
+
+void MainWindow::setTheme(QPalette pal)
+{
+    qApp->setPalette(pal);
 }
 

@@ -21,11 +21,11 @@ private:
     bool isBold       = false;
     bool isItalic     = false;
     bool isUnderlined = false;
-    bool isStrikeOut = false;
+    bool isStrikeOut  = false;
 
-    QFont font;
-    QTextCharFormat format;
-    QTextCursor cursor;
+    QFont                font;
+    QTextCharFormat    format;
+    QTextCursor        cursor;
 };
 
 #endif // FONTMANAGER_H

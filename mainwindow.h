@@ -4,11 +4,13 @@
 #include <QTextCharFormat>
 #include <QMainWindow>
 #include <QTextDocument>
+#include <QDockWidget>
 #include <QFileDialog>
 #include <QTextStream>
 #include <QHBoxLayout>
 #include <QPushButton>
 #include <QTextCursor>
+#include <QPalette>
 #include <QComboBox>
 #include <QLineEdit>
 #include <QTextEdit>
@@ -18,6 +20,7 @@
 
 #include "syntaxhighlighter.h"
 #include "fontmanager.h"
+#include "theme.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -36,16 +39,20 @@ public:
     void saveFile();
     void findNext();
     void findPrevious();
-    void setCursorPos(int, int);
+    void setCursorPos(int, int); 
 
 protected:
     void keyPressEvent(QKeyEvent *event) override;
+
 private slots:
     void fontBoxChanged();
     void boldButton();
     void italicButton();
     void underlinedButton();
     void strikeOutButton();
+    void changeTheme();
+    void setTheme(QPalette);
+
 private:
     Ui::MainWindow *ui;
 
@@ -55,5 +62,6 @@ private:
 
     SyntaxHighlighter *searchHighlighter;
     FontManager             *fontManager;
+    Theme                         *theme;
 };
 #endif // MAINWINDOW_H

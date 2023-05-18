@@ -1,8 +1,10 @@
 #include "syntaxhighlighter.h"
-
-SyntaxHighlighter::SyntaxHighlighter(QTextDocument *parent) : QSyntaxHighlighter(parent)
+#include <QDebug>
+SyntaxHighlighter::SyntaxHighlighter(QTextEdit *editor) :
+    QSyntaxHighlighter(editor->document()),
+    m_editor(editor)
 {
-    format.setBackground(Qt::yellow);
+
 }
 
 void SyntaxHighlighter::searchText(const QString &text)
@@ -15,9 +17,13 @@ void SyntaxHighlighter::highlightBlock(const QString &text)
 {
     QRegularExpressionMatchIterator matchIterator = pattern.globalMatch(text);
 
+    format.setBackground(Qt::yellow);
+
     while (matchIterator.hasNext())
     {
         QRegularExpressionMatch match = matchIterator.next();
         setFormat(match.capturedStart(), match.capturedLength(), format);
     }
+
+
 }
