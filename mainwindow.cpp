@@ -188,7 +188,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
                 ui->statusbar->hide();
             }
             break;
-        case Qt::Key_E:
+        case Qt::Key_R:
             if(textChanger->isHidden())
                 textChanger->show();
             else
