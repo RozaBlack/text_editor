@@ -21,6 +21,7 @@
 #include "syntaxhighlighter.h"
 #include "fontmanager.h"
 #include "theme.h"
+#include "textchanger.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -63,5 +64,6 @@ private:
     SyntaxHighlighter *searchHighlighter;
     FontManager             *fontManager;
     Theme                         *theme;
+    TextChanger             *textChanger;
 };
 #endif // MAINWINDOW_H

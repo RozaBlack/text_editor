@@ -10,6 +10,7 @@ MainWindow::MainWindow(QWidget *parent)
     searchHighlighter = new SyntaxHighlighter(ui->main_text);
     fontManager       = new FontManager();
     theme             = new Theme();
+    textChanger       = new TextChanger(ui->main_text);
 
     QLabel *text_label           = new QLabel(tr("find text:"), this);
     QPushButton *next_button     = new QPushButton(tr("next"), this);
@@ -186,6 +187,12 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
             }else{
                 ui->statusbar->hide();
             }
+            break;
+        case Qt::Key_E:
+            if(textChanger->isHidden())
+                textChanger->show();
+            else
+                textChanger->hide();
             break;
         }
     }
