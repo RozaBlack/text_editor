@@ -13,13 +13,15 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     syntaxhighlighter.cpp \
-    theme.cpp
+    theme.cpp \
+    textchanger.cpp
 
 HEADERS += \
     fontmanager.h \
     mainwindow.h \
     syntaxhighlighter.h \
-    theme.h
+    theme.h \
+    textchanger.h
 
 FORMS += \
     mainwindow.ui
